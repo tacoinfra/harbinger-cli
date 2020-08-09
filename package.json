@@ -1,0 +1,45 @@
+{
+  "name": "@tacoinfra/harbinger-cli",
+  "version": "1.3.0",
+  "description": "This is client software for reading / writing from the BTC / USD oracle. The following contracts are hardcoded: - [Oracle contract to read from](https://you.better-call.dev/carthagenet/KT1XjYrm3AX5Ptw2ZKXTPYE5ZDFWprfdihKb/storage) - [Oracle contract to write to](https://you.better-call.dev/carthagenet/KT1DiFg6TxLgsCFAFmLgc9mBBUdE7TRnQzMG/storage)",
+  "main": "build/src/cli.js",
+  "files": [
+    "build/**/*"
+  ],
+  "bin": {
+    "harbinger": "build/src/cli.js"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc -d",
+    "clean": "rm -rf ./build",
+    "prepublishOnly": "npm run build && chmod +x ./build/src/cli.js",
+    "test": "echo \"no tests :(\""
+  },
+  "author": "Blockscale LLC",
+  "license": "MIT",
+  "dependencies": {
+    "@ledgerhq/hw-transport": "^5.15.0",
+    "@ledgerhq/hw-transport-node-hid": "^5.16.0",
+    "aws-sdk": "^2.722.0",
+    "commander": "^5.1.0",
+    "conseiljs": "5.0.4-beta.1",
+    "loglevel": "^1.6.8",
+    "node-fetch": "^2.6.0",
+    "@tacoinfra/harbinger-lib": "1.0.21",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tacoinfra/harbinger-cli.git"
+  },
+  "keywords": [
+    "tezos",
+    "oracle",
+    "harbinger"
+  ],
+  "bugs": {
+    "url": "https://github.com/tacoinfra/harbinger-cli/issues"
+  },
+  "homepage": "https://github.com/tacoinfra/harbinger-cli#readme"
+}
