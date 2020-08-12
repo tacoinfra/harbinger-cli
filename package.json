@@ -12,6 +12,7 @@
   "scripts": {
     "build": "npm run clean && tsc -d",
     "clean": "rm -rf ./build",
+    "lint": "eslint . --ext .ts --fix",
     "prepublishOnly": "npm run build && chmod +x ./build/src/cli.js",
     "test": "echo \"no tests :(\""
   },
@@ -41,5 +42,15 @@
   "bugs": {
     "url": "https://github.com/tacoinfra/harbinger-cli/issues"
   },
-  "homepage": "https://github.com/tacoinfra/harbinger-cli#readme"
+  "homepage": "https://github.com/tacoinfra/harbinger-cli#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
+    "eslint": "^7.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5"
+  }
 }
