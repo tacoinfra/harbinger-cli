@@ -78,7 +78,6 @@ program.command('deploy-normalizer')
 
         const deployerPrivateKey = getInput(commandObject, "deployerPrivateKey", "deployer-private-key", PRIVATE_KEY_ENV_VAR)
 
-        // TODO(keefertaylor): Rename this function and associated functions / vars in tezos-oracle lib.
         deployNormalizer(
             logLevel,
             deployerPrivateKey,
