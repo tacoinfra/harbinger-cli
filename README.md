@@ -1,41 +1,69 @@
-# Harbinger Tezos oracle CLI
+# Harbinger CLI
 
-This is client software for reading / writing from the BTC / USD oracle. The following contracts are hardcoded:
-- [Oracle contract to read from](https://you.better-call.dev/carthagenet/KT1XjYrm3AX5Ptw2ZKXTPYE5ZDFWprfdihKb/storage)
-- [Oracle contract to write to](https://you.better-call.dev/carthagenet/KT1DiFg6TxLgsCFAFmLgc9mBBUdE7TRnQzMG/storage)
+## About 
 
-## Usage
+`harbinger-cli` is the source for a command line utility called `harbinger`. The CLI is a node binary package written in typescript that contains functionality for working with the [Harbinger Oracle](https://github.com/tacoinfra/harbinger). To get started with Harbinger, visit the [main documentation](https://github.com/tacoinfra/harbinger).
 
-## Pre-requisites
+This library provides functionality for interacting with the Harbinger oracle system. Users who want to post prices might also be interested in [Harbinger Poster]() which is a hosted component providing similar functionality for posting data to Harbinger. Entities who wish to sign prices for Harbinger may want to look at [Harbinger Signer](). Developers of new Harbinger components may be interested in [harbinger-lib]().
 
-Install the dependencies of the project and `ts-node` (allows direct execution of typescript).
 
+This library provides base functionality for the [Harbinger CLI](), [Harbinger Poster]() and [Harbinger Singer](). Thsi library is also useful for developers who want to interact with Harbinger functionality. Posters, signers, and users of Harbinger likely want to use one of the preceding higher level components.
+
+## Install the CLI
+
+To install the pre-packaged CLI from NPM, run the following:
+```
+$ npm i -g harbinger
+$ harbinger --help
+```
+
+To build the library from source, run:
 ```shell
 $ npm i
-$ npm i -g ts-node
+$ npm run build
 ```
 
-## Retrieve a BTC / USD Price
+## Functionality
 
-The following will output a closing price of BTC at a given timestamp. The data is read from [KT1XjYrm3AX5Ptw2ZKXTPYE5ZDFWprfdihKb](https://you.better-call.dev/carthagenet/KT1XjYrm3AX5Ptw2ZKXTPYE5ZDFWprfdihKb/storage).
+`harbinger` has the following functions:
+- Deploying an oracle or normalizer contract 
+- Update a contract from a price feed
+- Push data from an oracle to a normalizer contract
+- Pretty-print the value in an oracle contract
+- Revoke an oracle contract, triggering an emergency shutdown
+
+## Getting Started
+
+`harbinger` has fully interactive and complete documentation. Simply pass `--help` to `harbinger` or any subcommand. For instance:
+```shell
+$ harbinger --help
+# Prints harbinger documentation.
+
+$ harbinger deploy-oracle
+# Prints documentation for the deploy-oracle subcommand.
+```
+
+## Common Flows
+
+The following set of commands demonstrates a common flow for deploying and working with a Harbinger oracle.
 
 ```shell
-$ ts-node src/get-btc-usd-price.ts
+# Deploy an oracle contract
+$ harbinger deploy-oracle
+  # Prints KT1 address of oracle contract.
 
-Oracle Data:
-BTC / USD Price: [object Object]
-As of: 2020-03-29T10:53:00Z
+# Deploy a normalizer contract.
+$ harbinger deploy-normalizer \
+  --oracle-contract-address <address from above>
+  # Prints KT1 address of oracle contract.
+  
+# Push updates to the oracle contract and normalizer contract every 120 seconds.
+$ harbinger update \
+  --oracle-contract-address <KT1 address of oracle> \
+  --normalizer-contract-address <KT1 address of normalizer> \
+  --update-interval 120
 ```
+  
+## Credits
 
-## Update the BTC / USD Price
-
-The following will output a command to run in tezos-client to update the storage. Data is written to [KT1DiFg6TxLgsCFAFmLgc9mBBUdE7TRnQzMG](https://you.better-call.dev/carthagenet/KT1DiFg6TxLgsCFAFmLgc9mBBUdE7TRnQzMG/storage).
-
-```
-$ ts-node src/update-price.ts
-<Run given command>
-```
-
-# TODO
-
-- Pass contract as a param
+Harbinger is written and maintained by [Luke Youngblood]() and [Keefer Taylor](). 
