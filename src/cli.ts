@@ -18,9 +18,10 @@ import {
 } from '@tacoinfra/harbinger-lib'
 import * as commander from 'commander'
 
-const version = '1.3.2'
+const version = '1.3.4'
 
-const defaultNode = 'https://rpctest.tzbeta.net'
+const defaultTestnetNode = 'https://rpctest.tzbeta.net'
+const defaultMainnetNode = 'https://rpc.tzbeta.net'
 
 const program = new commander.Command()
 program.version(version)
@@ -50,6 +51,7 @@ const defaultAssetNames = [
 })
 
 /** Constants for Environment variables. */
+const TEZOS_NODE_URL_ENV_VAR = "HARBINGER_NODE_URL"
 const PRIVATE_KEY_ENV_VAR = 'HARBINGER_PRIVATE_KEY'
 const COINBASE_API_KEY_ID_ENV_VAR = 'COINBASE_API_KEY_ID'
 const COINBASE_API_PASSPHRASE_ENV_VAR = 'COINBASE_API_PASSPHRASE'
@@ -70,14 +72,14 @@ program
     coinbasePublicKey,
   )
   .option(
-    '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
-    defaultNode,
-  )
-  .option(
     '--asset-names <comma seperated list>',
     'A comma seperated list of asset names to include in the oracle. Example: BTC-USD,XTZ-USD',
     defaultAssetNames,
+  )
+  .option('--mainnet', `If passed, interactions will occur with Tezos Mainnet. This option has no effect if --tezos-node-url is passed or "${TEZOS_NODE_URL_ENV_VAR} is set`, false)
+  .option(
+    '--tezos-node-url <Node URL>',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
@@ -99,7 +101,7 @@ program
       assetNamesArray,
       commandObject.signerPublicKey,
       deployerPrivateKey,
-      commandObject.tezosNodeUrl,
+      determineNodeURL(commandObject),
     )
   })
 
@@ -127,10 +129,10 @@ program
     `A base58check encoded private key starting with "edsk". If omitted, this argument can also be read from the "${PRIVATE_KEY_ENV_VAR}" environment variable.`,
     undefined,
   )
+  .option('--mainnet', `If passed, interactions will occur with Tezos Mainnet. This option has no effect if --tezos-node-url is passed or "${TEZOS_NODE_URL_ENV_VAR} is set`, false)
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
-    defaultNode,
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
@@ -150,7 +152,7 @@ program
       commandObject.assetName,
       commandObject.dataPoints,
       commandObject.oracleContractAddress,
-      commandObject.tezosNodeUrl,
+      determineNodeURL(commandObject),
     )
   })
 
@@ -189,10 +191,10 @@ program
     'If present, data is pushed to the medianizer contract on successful updates.',
     undefined,
   )
+  .option('--mainnet', `If passed, interactions will occur with Tezos Mainnet. This option has no effect if --tezos-node-url is passed or "${TEZOS_NODE_URL_ENV_VAR} is set`, false)
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
-    defaultNode,
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
   .option(
     '--update-interval <seconds>',
@@ -239,7 +241,7 @@ program
       assetNamesArray,
       posterPrivateKey,
       commandObject.updateInterval,
-      commandObject.tezosNodeUrl,
+      determineNodeURL(commandObject),
       commandObject.normalizerContractAddress,
     )
   })
@@ -271,10 +273,10 @@ program
     'If present, data is pushed to the medianizer contract on successful updates.',
     undefined,
   )
+  .option('--mainnet', `If passed, interactions will occur with Tezos Mainnet. This option has no effect if --tezos-node-url is passed or "${TEZOS_NODE_URL_ENV_VAR} is set`, false)
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
-    defaultNode,
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
   .option(
     '--update-interval <seconds>',
@@ -301,7 +303,7 @@ program
       assetNamesArray,
       posterPrivateKey,
       commandObject.updateInterval,
-      commandObject.tezosNodeUrl,
+      determineNodeURL(commandObject),
       commandObject.normalizerContractAddress,
     )
   })
@@ -323,10 +325,10 @@ program
     `A base58check encoded private key starting with "edsk". If omitted, this argument can also be read from the "${PRIVATE_KEY_ENV_VAR}" environment variable.`,
     undefined,
   )
+  .option('--mainnet', `If passed, interactions will occur with Tezos Mainnet. This option has no effect if --tezos-node-url is passed or "${TEZOS_NODE_URL_ENV_VAR} is set`, false)
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
-    defaultNode,
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
@@ -345,7 +347,7 @@ program
       commandObject.oracleContractAddress,
       commandObject.normalizerContractAddress,
       pusherPrivateKey,
-      commandObject.tezosNodeUrl,
+      determineNodeURL(commandObject),
     )
   })
 
@@ -358,21 +360,20 @@ program
     '--oracle-contract-address <KT1 Address>',
     'The address of the oracle contract.',
   )
+  .option('--mainnet', `If passed, interactions will occur with Tezos Mainnet. This option has no effect if --tezos-node-url is passed or "${TEZOS_NODE_URL_ENV_VAR} is set`, false)
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
-    defaultNode,
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
     const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
     initOracleLib(conseilLogLevel)
 
-    const tezosNodeURL = commandObject.tezosNodeUrl
     const contract = commandObject.oracleContractAddress
     const assetName = commandObject.assetName
-
-    get(tezosNodeURL, contract, assetName, logLevel)
+    
+    get(determineNodeURL(commandObject), contract, assetName, logLevel)
   })
 
 program
@@ -393,10 +394,10 @@ program
     `A base58check encoded private key starting with "edsk". If omitted, this argument can also be read from the "${PRIVATE_KEY_ENV_VAR}" environment variable.`,
     undefined,
   )
+  .option('--mainnet', `If passed, interactions will occur with Tezos Mainnet. This option has no effect if --tezos-node-url is passed or "${TEZOS_NODE_URL_ENV_VAR} is set`, false)
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
-    defaultNode,
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
@@ -415,9 +416,42 @@ program
       commandObject.signature,
       commandObject.oracleContractAddress,
       revokerPrivateKey,
-      commandObject.tezosNodeUrl,
+      determineNodeURL(commandObject),
     )
   })
+
+/**
+ * Determine a Node URL to use.
+ * 
+ * Precedence is given in the following order:
+ * 1) An explicitly passed CLI argument.
+ * 2) An environment variable
+ * 3) The default node.
+ * 
+ * If (3) is chosen, the default node (testnet vs mainnet) is determined by the presence of the Mainnet flag.
+ * 
+ * @param command The command object that invoked the program.
+ * @returns A node URL to use.
+ */
+function determineNodeURL(
+  command: commander.Command,
+): string {
+  // Always take the explicit value passed on the command line.
+  const cliNodeUrl = command.tezosNodeUrl
+  if (cliNodeUrl !== undefined) {
+    return cliNodeUrl
+  }
+
+  // Otherwise, see if there's an ENV var specifying what is needed.
+  const envVarNodeUrl = process.env[TEZOS_NODE_URL_ENV_VAR]
+  if (envVarNodeUrl !== undefined) {
+    return envVarNodeUrl
+  }
+
+  // Otherwise, fall back to the default node.
+  return command.mainnet ? defaultMainnetNode : defaultTestnetNode
+}
+  
 
 /**
  * Get the input from the given command.
