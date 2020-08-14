@@ -1,6 +1,6 @@
 {
   "name": "@tacoinfra/harbinger-cli",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "This is client software for reading / writing from the BTC / USD oracle. The following contracts are hardcoded: - [Oracle contract to read from](https://you.better-call.dev/carthagenet/KT1XjYrm3AX5Ptw2ZKXTPYE5ZDFWprfdihKb/storage) - [Oracle contract to write to](https://you.better-call.dev/carthagenet/KT1DiFg6TxLgsCFAFmLgc9mBBUdE7TRnQzMG/storage)",
   "main": "build/src/cli.js",
   "files": [
