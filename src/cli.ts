@@ -50,6 +50,7 @@ const defaultAssetNames = [
 })
 
 /** Constants for Environment variables. */
+const NODE_ENV_VAR = "HARBINGER_NODE"
 const PRIVATE_KEY_ENV_VAR = 'HARBINGER_PRIVATE_KEY'
 const COINBASE_API_KEY_ID_ENV_VAR = 'COINBASE_API_KEY_ID'
 const COINBASE_API_PASSPHRASE_ENV_VAR = 'COINBASE_API_PASSPHRASE'
@@ -71,7 +72,7 @@ program
   )
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${NODE_ENV_VAR}" environment variable.`,
     defaultNode,
   )
   .option(
@@ -94,12 +95,19 @@ program
       PRIVATE_KEY_ENV_VAR,
     )
 
+    const nodeUrl = getInput(
+      commandObject,
+      "tezosNodeUrl",
+      "tezos-node-url",
+      NODE_ENV_VAR
+    )
+
     deployOracle(
       logLevel,
       assetNamesArray,
       commandObject.signerPublicKey,
       deployerPrivateKey,
-      commandObject.tezosNodeUrl,
+      nodeUrl,
     )
   })
 
@@ -129,7 +137,7 @@ program
   )
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${NODE_ENV_VAR}" environment variable.`,
     defaultNode,
   )
   .action(function (commandObject) {
@@ -144,13 +152,20 @@ program
       PRIVATE_KEY_ENV_VAR,
     )
 
+    const nodeUrl = getInput(
+      commandObject,
+      "tezosNodeUrl",
+      "tezos-node-url",
+      NODE_ENV_VAR
+    )
+
     deployNormalizer(
       logLevel,
       deployerPrivateKey,
       commandObject.assetName,
       commandObject.dataPoints,
       commandObject.oracleContractAddress,
-      commandObject.tezosNodeUrl,
+      nodeUrl,
     )
   })
 
@@ -191,7 +206,7 @@ program
   )
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${NODE_ENV_VAR}" environment variable.`,
     defaultNode,
   )
   .option(
@@ -229,6 +244,12 @@ program
       'coinbase-api-passphrase',
       COINBASE_API_PASSPHRASE_ENV_VAR,
     )
+    const nodeUrl = getInput(
+      commandObject,
+      "tezosNodeUrl",
+      "tezos-node-url",
+      NODE_ENV_VAR
+    )
 
     updateOracleFromCoinbase(
       logLevel,
@@ -239,7 +260,7 @@ program
       assetNamesArray,
       posterPrivateKey,
       commandObject.updateInterval,
-      commandObject.tezosNodeUrl,
+      nodeUrl,
       commandObject.normalizerContractAddress,
     )
   })
@@ -273,7 +294,7 @@ program
   )
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${NODE_ENV_VAR}" environment variable.`,
     defaultNode,
   )
   .option(
@@ -294,6 +315,13 @@ program
       PRIVATE_KEY_ENV_VAR,
     )
 
+    const nodeUrl = getInput(
+      commandObject,
+      "tezosNodeUrl",
+      "tezos-node-url",
+      NODE_ENV_VAR
+    )
+
     updateOracleFromFeed(
       logLevel,
       commandObject.oracleDataFeedUrl,
@@ -301,7 +329,7 @@ program
       assetNamesArray,
       posterPrivateKey,
       commandObject.updateInterval,
-      commandObject.tezosNodeUrl,
+      nodeUrl,
       commandObject.normalizerContractAddress,
     )
   })
@@ -325,7 +353,7 @@ program
   )
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${NODE_ENV_VAR}" environment variable.`,
     defaultNode,
   )
   .action(function (commandObject) {
@@ -340,12 +368,20 @@ program
       PRIVATE_KEY_ENV_VAR,
     )
 
+    const nodeUrl = getInput(
+      commandObject,
+      "tezosNodeUrl",
+      "tezos-node-url",
+      NODE_ENV_VAR
+    )
+
+
     pushOracleData(
       logLevel,
       commandObject.oracleContractAddress,
       commandObject.normalizerContractAddress,
       pusherPrivateKey,
-      commandObject.tezosNodeUrl,
+      nodeUrl,
     )
   })
 
@@ -360,7 +396,7 @@ program
   )
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${NODE_ENV_VAR}" environment variable.`,
     defaultNode,
   )
   .action(function (commandObject) {
@@ -395,7 +431,7 @@ program
   )
   .option(
     '--tezos-node-url <Node URL>',
-    'Tezos node URL to use to broadcast operation.',
+    `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${NODE_ENV_VAR}" environment variable.`,
     defaultNode,
   )
   .action(function (commandObject) {
