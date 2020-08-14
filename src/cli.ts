@@ -296,13 +296,6 @@ program
       PRIVATE_KEY_ENV_VAR,
     )
 
-    const nodeUrl = getInput(
-      commandObject,
-      "tezosNodeUrl",
-      "tezos-node-url",
-      TEZOS_NODE_URL_ENV_VAR
-    )
-
     updateOracleFromFeed(
       logLevel,
       commandObject.oracleDataFeedUrl,
@@ -347,13 +340,6 @@ program
       'pusherPrivateKey',
       'pusher-private-key',
       PRIVATE_KEY_ENV_VAR,
-    )
-
-    const nodeUrl = getInput(
-      commandObject,
-      "tezosNodeUrl",
-      "tezos-node-url",
-      TEZOS_NODE_URL_ENV_VAR
     )
 
     pushOracleData(
@@ -423,13 +409,6 @@ program
       'revokerPrivateKey',
       'revoker-private-key',
       PRIVATE_KEY_ENV_VAR,
-    )
-
-    const nodeUrl = getInput(
-      commandObject,
-      "tezosNodeUrl",
-      "tezos-node-url",
-      TEZOS_NODE_URL_ENV_VAR
     )
 
     revokeOracle(
