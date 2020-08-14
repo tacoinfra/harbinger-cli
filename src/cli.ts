@@ -18,7 +18,7 @@ import {
 } from '@tacoinfra/harbinger-lib'
 import * as commander from 'commander'
 
-const version = '1.3.0'
+const version = '1.3.2'
 
 const defaultNode = 'https://rpctest.tzbeta.net'
 
