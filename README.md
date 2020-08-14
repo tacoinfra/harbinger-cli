@@ -14,7 +14,7 @@ This library provides base functionality for the [Harbinger CLI](), [Harbinger P
 To install the pre-packaged CLI from NPM, run the following:
 ```
 $ npm i -g harbinger
-$ harbinger --help
+$ @tacoinfra/harbinger --help
 ```
 
 To build the library from source, run:
