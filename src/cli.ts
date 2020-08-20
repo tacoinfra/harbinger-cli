@@ -18,7 +18,7 @@ import {
 } from '@tacoinfra/harbinger-lib'
 import * as commander from 'commander'
 
-const version = '1.3.5'
+const version = '1.4.0'
 
 const defaultTestnetNode = 'https://rpctest.tzbeta.net'
 const defaultMainnetNode = 'https://rpc.tzbeta.net'
@@ -114,9 +114,9 @@ program
     'The address of the oracle contract which provides updates',
   )
   .option(
-    '--asset-name <asset name>',
-    'The name of the asset to normalize. Ex. XTZ-USD',
-    'XTZ-USD',
+    '--asset-names <comma seperated list>',
+    'A comma seperated list of asset names to include in the oracle. Example: BTC-USD,XTZ-USD',
+    defaultAssetNames,
   )
   .option(
     '--data-points <number>',
@@ -139,6 +139,10 @@ program
     const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
     initOracleLib(conseilLogLevel)
 
+    const assetNamesArray: Array<string> = commandObject.assetNames
+      .split(',')
+      .sort()
+
     const deployerPrivateKey = getInput(
       commandObject,
       'deployerPrivateKey',
@@ -149,7 +153,7 @@ program
     deployNormalizer(
       logLevel,
       deployerPrivateKey,
-      commandObject.assetName,
+      assetNamesArray,
       commandObject.dataPoints,
       commandObject.oracleContractAddress,
       determineNodeURL(commandObject),
