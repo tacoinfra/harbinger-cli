@@ -334,6 +334,11 @@ program
     '--tezos-node-url <Node URL>',
     `Tezos node URL to use to broadcast operation. If omitted, this argument can also be read from the "${TEZOS_NODE_URL_ENV_VAR}" environment variable. If neither an argument or environment variable are provided, then a Tezos Foundation node (tzbeta.net) will be chosen based on whether --mainnet was passed.`,
   )
+  .option(
+    '--update-interval <seconds>',
+    'The number of seconds to wait between updates. If not set, the update only runs once.',
+    parseCLIInt,
+  )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
     const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
@@ -351,6 +356,7 @@ program
       commandObject.oracleContractAddress,
       commandObject.normalizerContractAddress,
       pusherPrivateKey,
+      commandObject.updateInterval,
       determineNodeURL(commandObject),
     )
   })
