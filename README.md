@@ -13,9 +13,8 @@ This library provides base functionality for the [Harbinger CLI](), [Harbinger P
 
 To install the pre-packaged CLI from NPM, run the following:
 ```
-$ npm i -g harbinger
-$ @tacoinfra/harbinger --help
-$ which harbinger
+$ npm i -g @tacoinfra/harbinger-cli
+$ harbinger --help
 ```
 
 To build the library from source, run:
@@ -25,6 +24,8 @@ $ npm run build
 ```
 
 ## Functionality
+
+Note: Harbinger installs a symlink named `hbg` which executes the same `harbinger` binary as a shortcut, in case you don't want to type the full name.
 
 `harbinger` has the following functions:
 - Deploying an oracle or normalizer contract 
