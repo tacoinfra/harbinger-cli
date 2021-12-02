@@ -50,6 +50,9 @@ const defaultAssetNames = [
   return previous + ',' + current
 })
 
+// The default number of data points to use
+const DEFAULT_DATA_POINTS = 6
+
 /** Constants for Environment variables. */
 const TEZOS_NODE_URL_ENV_VAR = "HARBINGER_NODE_URL"
 const PRIVATE_KEY_ENV_VAR = 'HARBINGER_PRIVATE_KEY'
@@ -122,7 +125,7 @@ program
     '--data-points <number>',
     'The number of data points to store. Larger sets of data consume more space on chain.',
     parseCLIInt,
-    3,
+    DEFAULT_DATA_POINTS,
   )
   .option(
     '--deployer-private-key <private key>',
@@ -382,7 +385,7 @@ program
 
     const contract = commandObject.oracleContractAddress
     const assetName = commandObject.assetName
-    
+
     get(determineNodeURL(commandObject), contract, assetName, logLevel)
   })
 
@@ -461,7 +464,7 @@ function determineNodeURL(
   // Otherwise, fall back to the default node.
   return command.mainnet ? defaultMainnetNode : defaultTestnetNode
 }
-  
+
 
 /**
  * Get the input from the given command.
