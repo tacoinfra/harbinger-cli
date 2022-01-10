@@ -6,7 +6,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import {
-  initOracleLib,
   updateOracleFromCoinbase,
   updateOracleFromFeed,
   deployNormalizer,
@@ -20,15 +19,14 @@ import * as commander from 'commander'
 
 const version = '1.8.0'
 
-const defaultTestnetNode = 'https://rpctest.tzbeta.net'
-const defaultMainnetNode = 'https://rpc.tzbeta.net'
+const defaultTestnetNode = 'https://hangzhounet.smartpy.io'
+const defaultMainnetNode = 'https://mainnet.smartpy.io'
 
 const program = new commander.Command()
 program.version(version)
 
 // Global options
 program.option('--debug', 'Print verbose output.')
-program.option('--debug-conseil', 'Prints ConseilJS debug data.')
 
 // The default public key for the coinbase signer.
 const coinbasePublicKey =
@@ -86,8 +84,6 @@ program
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
-    const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
-    initOracleLib(conseilLogLevel)
     const assetNamesArray: Array<string> = commandObject.assetNames
       .split(',')
       .sort()
@@ -139,9 +135,6 @@ program
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
-    const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
-    initOracleLib(conseilLogLevel)
-
     const assetNamesArray: Array<string> = commandObject.assetNames
       .split(',')
       .sort()
@@ -210,8 +203,6 @@ program
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
-    const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
-    initOracleLib(conseilLogLevel)
     const assetNamesArray = commandObject.assetNames.split(',').sort()
 
     const posterPrivateKey = getInput(
@@ -292,8 +283,6 @@ program
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
-    const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
-    initOracleLib(conseilLogLevel)
     const assetNamesArray = commandObject.assetNames.split(',').sort()
 
     const posterPrivateKey = getInput(
@@ -344,8 +333,6 @@ program
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
-    const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
-    initOracleLib(conseilLogLevel)
 
     const pusherPrivateKey = getInput(
       commandObject,
@@ -380,8 +367,6 @@ program
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
-    const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
-    initOracleLib(conseilLogLevel)
 
     const contract = commandObject.oracleContractAddress
     const assetName = commandObject.assetName
@@ -414,8 +399,6 @@ program
   )
   .action(function (commandObject) {
     const logLevel = program.debug ? LogLevel.Debug : LogLevel.Info
-    const conseilLogLevel = program.debugConseil ? 'debug' : 'error'
-    initOracleLib(conseilLogLevel)
 
     const revokerPrivateKey = getInput(
       commandObject,
