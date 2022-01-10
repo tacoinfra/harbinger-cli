@@ -1,6 +1,6 @@
 {
   "name": "@tacoinfra/harbinger-cli",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "This is client software for reading / writing from the BTC / USD oracle. The following contracts are hardcoded: - [Oracle contract to read from](https://you.better-call.dev/carthagenet/KT1XjYrm3AX5Ptw2ZKXTPYE5ZDFWprfdihKb/storage) - [Oracle contract to write to](https://you.better-call.dev/carthagenet/KT1DiFg6TxLgsCFAFmLgc9mBBUdE7TRnQzMG/storage)",
   "main": "build/src/cli.js",
   "files": [
@@ -22,14 +22,11 @@
   "dependencies": {
     "@ledgerhq/hw-transport": "^5.15.0",
     "@ledgerhq/hw-transport-node-hid": "^5.16.0",
-    "@tacoinfra/harbinger-lib": "^2.0.0",
+    "@tacoinfra/harbinger-lib": "^2.0.2",
     "aws-sdk": "^2.722.0",
     "commander": "^5.1.0",
-    "conseiljs": "5.0.4",
-    "loglevel": "^1.6.8",
-    "node-fetch": "^2.6.1",
     "ts-node": "^8.8.1",
-    "typescript": "^3.8.3"
+    "typescript": "^4.5.2"
   },
   "repository": {
     "type": "git",
@@ -45,6 +42,7 @@
   },
   "homepage": "https://github.com/tacoinfra/harbinger-cli#readme",
   "devDependencies": {
+    "@types/node": "^16.11.12",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
     "eslint": "^7.6.0",
